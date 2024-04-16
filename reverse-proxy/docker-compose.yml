@@ -1,0 +1,46 @@
+# Versión de la sintaxis de Docker Compose
+version: '3'
+
+# Definición de los servicios que se ejecutarán en Docker Compose
+services:
+  # Configuración del servicio proxy
+  proxy:
+    # Nombre del contenedor
+    container_name: proxy
+    # Configuración de la construcción de la imagen del contenedor
+    build:
+      # Ruta al contexto de construcción, donde se encuentran los archivos Dockerfile y demás archivos necesarios para la construcción de la imagen
+      context: .
+      # Objetivo específico para la construcción de la imagen, en este caso, el stage 'proxy' del Dockerfile
+      target: proxy
+      # Especificación del archivo Dockerfile a utilizar para construir la imagen
+      dockerfile: Dockerfile
+    # Nombre de la imagen resultante después de la construcción
+    image: nginx-proxy
+    # Mapeo de puertos del contenedor al host
+    ports:
+      -  80:80
+    # Política de reinicio del contenedor en caso de fallo o reinicio del sistema
+    restart: always
+
+  # Configuración del servicio app-uno
+  app-uno:
+    container_name: app-uno
+    build:
+      context: .
+      # Objetivo específico para la construcción de la imagen, en este caso, el stage 'app-uno' del Dockerfile
+      target: app-uno
+      dockerfile: Dockerfile
+    image: nginx-app-uno
+    restart: always
+  
+  # Configuración del servicio app-dos
+  app-dos:
+    container_name: app-dos
+    build:
+      context: .
+      # Objetivo específico para la construcción de la imagen, en este caso, el stage 'app-dos' del Dockerfile
+      target: app-dos
+      dockerfile: Dockerfile
+    image: nginx-app-dos
+    restart: always
